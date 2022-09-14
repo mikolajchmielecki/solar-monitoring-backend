@@ -9,10 +9,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class UserRequest {
+public class UserEditRequest {
 
     private String username;
-    private String password;
+    private String newPassword;
+    private String oldPassword;
     private String email;
 
 }

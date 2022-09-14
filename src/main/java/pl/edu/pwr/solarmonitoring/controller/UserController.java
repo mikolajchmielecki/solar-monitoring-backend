@@ -3,9 +3,13 @@ package pl.edu.pwr.solarmonitoring.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.pwr.solarmonitoring.model.User;
+import pl.edu.pwr.solarmonitoring.model.request.UserEditRequest;
 import pl.edu.pwr.solarmonitoring.model.request.UserRequest;
 import pl.edu.pwr.solarmonitoring.service.UserService;
+import pl.edu.pwr.solarmonitoring.utils.UserUtils;
 
 
 @RestController
@@ -25,4 +29,14 @@ public class UserController {
         }
     }
 
+    @PatchMapping("/update")
+    public ResponseEntity<String> updateUser(Authentication authentication, @RequestBody UserEditRequest userEditRequest) {
+        try {
+            User user = UserUtils.fromAuthentication(authentication);
+            userService.updateUser(user, userEditRequest);
+            return new ResponseEntity<>(String.format("User %s updated", user.getUsername()), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
