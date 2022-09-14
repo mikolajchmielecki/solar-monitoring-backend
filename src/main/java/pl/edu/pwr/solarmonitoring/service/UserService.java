@@ -8,4 +8,5 @@ public interface UserService {
 
     void createUser(UserRequest userRequest);
     void updateUser(User user, UserEditRequest userEditRequest);
+    void deleteUser(User user);
 }

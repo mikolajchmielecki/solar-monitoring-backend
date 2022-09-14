@@ -39,4 +39,15 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteUser(Authentication authentication) {
+        try {
+            User user = UserUtils.fromAuthentication(authentication);
+            userService.deleteUser(user);
+            return new ResponseEntity<>(String.format("User %s deleted", user.getUsername()), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
