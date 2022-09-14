@@ -1,4 +1,4 @@
-package com.javainuse.config;
+package pl.edu.pwr.solarmonitoring.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

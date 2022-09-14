@@ -1,4 +1,4 @@
-package com.javainuse.model;
+package pl.edu.pwr.solarmonitoring.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

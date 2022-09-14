@@ -1,21 +1,26 @@
-package com.javainuse.service;
+package pl.edu.pwr.solarmonitoring.service.impl;
 
-import java.util.ArrayList;
+import java.util.Optional;
 
-import org.springframework.security.core.userdetails.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import pl.edu.pwr.solarmonitoring.model.User;
+import pl.edu.pwr.solarmonitoring.repository.UserRepository;
 
 @Service
-public class JwtUserDetailsService implements UserDetailsService {
+@RequiredArgsConstructor
+public class UserDetailsServiceImpl implements UserDetailsService {
+
+	private final UserRepository userRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		if ("mikolaj".equals(username)) {
-			return new User("mikolaj", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
-					new ArrayList<>());
+		Optional<User> user = userRepository.findByUsername(username);
+		if (user.isPresent()) {
+			return user.get();
 		} else {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}

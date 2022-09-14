@@ -1,9 +1,8 @@
-package com.javainuse.controller;
+package pl.edu.pwr.solarmonitoring.controller;
 
 import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.javainuse.config.JwtTokenUtil;
-import com.javainuse.model.JwtRequest;
-import com.javainuse.model.JwtResponse;
+import pl.edu.pwr.solarmonitoring.config.JwtTokenUtil;
+import pl.edu.pwr.solarmonitoring.model.request.JwtRequest;
+import pl.edu.pwr.solarmonitoring.model.response.JwtResponse;
 
 @RestController
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.javainuse.config;
+package pl.edu.pwr.solarmonitoring.config;
 
 import java.io.IOException;
 
@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +15,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.javainuse.service.JwtUserDetailsService;
+import pl.edu.pwr.solarmonitoring.service.impl.UserDetailsServiceImpl;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
@@ -24,7 +23,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-	private final JwtUserDetailsService jwtUserDetailsService;
+	private final UserDetailsServiceImpl jwtUserDetailsService;
 
 	private final JwtTokenUtil jwtTokenUtil;
 

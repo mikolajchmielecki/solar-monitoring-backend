@@ -1,4 +1,4 @@
-package com.javainuse.config;
+package pl.edu.pwr.solarmonitoring.config;
 
 import java.io.IOException;
 import java.io.Serializable;
