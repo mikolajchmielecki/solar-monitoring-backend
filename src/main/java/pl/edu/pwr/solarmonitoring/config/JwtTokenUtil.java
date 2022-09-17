@@ -1,4 +1,4 @@
-package com.javainuse.config;
+package pl.edu.pwr.solarmonitoring.config;
 
 import java.io.Serializable;
 import java.util.Date;

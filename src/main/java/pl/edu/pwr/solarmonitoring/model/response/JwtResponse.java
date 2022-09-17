@@ -1,4 +1,4 @@
-package com.javainuse.model;
+package pl.edu.pwr.solarmonitoring.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
