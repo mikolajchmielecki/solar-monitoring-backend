@@ -17,7 +17,6 @@ import pl.edu.pwr.solarmonitoring.repository.UserRepository;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private final UserRepository userRepository;
-
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		log.debug("loadUserByUsername " + username);
