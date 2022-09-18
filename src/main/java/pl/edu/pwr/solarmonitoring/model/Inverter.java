@@ -12,9 +12,9 @@ public abstract class Inverter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
     @Column
-    public String name;
+    private String name;
 
 }

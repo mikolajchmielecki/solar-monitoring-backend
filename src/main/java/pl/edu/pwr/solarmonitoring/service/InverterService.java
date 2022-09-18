@@ -10,7 +10,6 @@ public interface InverterService {
     void add(User user, SolarEdgeRequest request);
     void update(User user, SolaxRequest request);
     void update(User user, SolarEdgeRequest request);
-    void delete(User user, SolaxRequest request);
-    void delete(User user, SolarEdgeRequest request);
+    void delete(User user, Long id);
 
 }
