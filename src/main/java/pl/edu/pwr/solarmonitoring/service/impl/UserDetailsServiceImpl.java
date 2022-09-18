@@ -11,13 +11,17 @@ import org.springframework.stereotype.Service;
 import pl.edu.pwr.solarmonitoring.model.User;
 import pl.edu.pwr.solarmonitoring.repository.UserRepository;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private final UserRepository userRepository;
+
 	@Override
+	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		log.debug("loadUserByUsername " + username);
 		Optional<User> user = userRepository.findByUsername(username);
