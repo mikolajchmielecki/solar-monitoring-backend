@@ -36,6 +36,8 @@ public class UserServiceImpl implements UserService {
                 .username(userRequest.getUsername())
                 .password(encoder.encode(userRequest.getPassword()))
                 .email(userRequest.getEmail())
+                .firstName(userRequest.getFirstName())
+                .secondName(userRequest.getSecondName())
                 .build();
         userRepository.save(newUser);
     }
@@ -66,6 +68,13 @@ public class UserServiceImpl implements UserService {
 
         if (StringUtils.isNotEmpty(userEditRequest.getUsername())) {
             user.setUsername(userEditRequest.getUsername());
+        }
+
+        if (StringUtils.isNotEmpty(userEditRequest.getFirstName())) {
+            user.setFirstName(userEditRequest.getFirstName());
+        }
+        if (StringUtils.isNotEmpty(userEditRequest.getSecondName())) {
+            user.setSecondName(userEditRequest.getSecondName());
         }
 
         if (StringUtils.isNotEmpty(userEditRequest.getEmail())) {

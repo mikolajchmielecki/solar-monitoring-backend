@@ -1,9 +1,6 @@
 package pl.edu.pwr.solarmonitoring.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,6 +15,7 @@ import java.util.Collection;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class User implements UserDetails {
 
     @Id
@@ -29,6 +27,12 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+
+    @Column
+    private String firstName;
+
+    @Column
+    private String secondName;
 
     @Column(nullable = false)
     private String email;

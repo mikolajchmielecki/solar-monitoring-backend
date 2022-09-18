@@ -14,6 +14,8 @@ public class UserEditRequest {
     private String username;
     private String newPassword;
     private String oldPassword;
+    private String firstName;
+    private String secondName;
     private String email;
 
 }
