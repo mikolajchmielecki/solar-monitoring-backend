@@ -30,7 +30,13 @@ public class InverterServiceImpl implements InverterService {
     @Override
     public void add(User user, SolaxRequest request) {
         log.debug("Add " + request + " to " + user);
+        if (request.getId() != null) {
+            String msg = "Inverter request contains id";
+            log.error(msg);
+            throw new IllegalArgumentException(msg);
+        }
         SolaxInverter inverter = SolaxInverterMapper.INSTANCE.requestToEntity(request);
+        inverter.setTokenId(inverter.getTokenId());
         user.getInverters().add(inverter);
         userRepository.save(user);
     }
@@ -44,6 +50,7 @@ public class InverterServiceImpl implements InverterService {
             throw new IllegalArgumentException(msg);
         }
         SolarEdgeInverter inverter = SolarEdgeInverterMapper.INSTANCE.requestToEntity(request);
+        inverter.setApiKey(inverter.getApiKey());
         user.getInverters().add(inverter);
         userRepository.save(user);
     }
@@ -101,8 +108,8 @@ public class InverterServiceImpl implements InverterService {
         if (request.getSiteId() != null) {
             solaxInverter.setSiteId(request.getSiteId());
         }
-        if (request.getSiteId() != null) {
-            solaxInverter.setApiKey(request.getSiteId());
+        if (request.getApiKey() != null) {
+            solaxInverter.setApiKey(request.getApiKey());
         }
 
         solarEdgeRepository.save(solaxInverter);

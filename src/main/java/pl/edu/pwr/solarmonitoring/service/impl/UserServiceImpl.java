@@ -10,6 +10,7 @@ import pl.edu.pwr.solarmonitoring.model.request.UserEditRequest;
 import pl.edu.pwr.solarmonitoring.model.request.UserRequest;
 import pl.edu.pwr.solarmonitoring.repository.UserRepository;
 import pl.edu.pwr.solarmonitoring.service.UserService;
+import pl.edu.pwr.solarmonitoring.utils.EncryptionUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +18,6 @@ import pl.edu.pwr.solarmonitoring.service.UserService;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Override
     public void createUser(UserRequest userRequest) {
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
         }
         User newUser = User.builder()
                 .username(userRequest.getUsername())
-                .password(encoder.encode(userRequest.getPassword()))
+                .password(EncryptionUtils.PASSWORD_ENCODER.encode(userRequest.getPassword()))
                 .email(userRequest.getEmail())
                 .firstName(userRequest.getFirstName())
                 .secondName(userRequest.getSecondName())
@@ -57,8 +57,8 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException(msg);
         }
         if (StringUtils.isNotEmpty(userEditRequest.getOldPassword()) && StringUtils.isNotEmpty(userEditRequest.getNewPassword())) {
-            if (encoder.matches(userEditRequest.getOldPassword(), user.getPassword())) {
-                user.setPassword(encoder.encode(userEditRequest.getNewPassword()));
+            if (EncryptionUtils.PASSWORD_ENCODER.matches(userEditRequest.getOldPassword(), user.getPassword())) {
+                user.setPassword(EncryptionUtils.PASSWORD_ENCODER.encode(userEditRequest.getNewPassword()));
             } else {
                 String msg = "Invalid password";
                 log.debug(msg);

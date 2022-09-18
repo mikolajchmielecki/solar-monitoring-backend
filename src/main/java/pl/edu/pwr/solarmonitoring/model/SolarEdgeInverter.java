@@ -1,6 +1,7 @@
 package pl.edu.pwr.solarmonitoring.model;
 
 import lombok.*;
+import pl.edu.pwr.solarmonitoring.utils.EncryptionUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,5 +21,13 @@ public class SolarEdgeInverter extends Inverter {
 
     @Column(nullable = false)
     private String siteId;
+
+    public String getApiKey() {
+        return EncryptionUtils.decrypt(apiKey);
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = EncryptionUtils.encrypt(apiKey);
+    }
 
 }
