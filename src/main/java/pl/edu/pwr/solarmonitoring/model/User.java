@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -28,14 +30,21 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column
+    @Column(nullable = false)
     private String firstName;
 
-    @Column
+    @Column(nullable = false)
     private String secondName;
 
     @Column(nullable = false)
     private String email;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "user_id")
+    private Set<Inverter> inverters;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
