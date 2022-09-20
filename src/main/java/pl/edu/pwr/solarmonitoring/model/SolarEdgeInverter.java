@@ -1,6 +1,8 @@
 package pl.edu.pwr.solarmonitoring.model;
 
 import lombok.*;
+import pl.edu.pwr.solarmonitoring.exchange.inverters.SolarEdgeExchange;
+import pl.edu.pwr.solarmonitoring.exchange.inverters.Status;
 import pl.edu.pwr.solarmonitoring.utils.EncryptionUtils;
 
 import javax.persistence.Column;
@@ -30,4 +32,18 @@ public class SolarEdgeInverter extends Inverter {
         this.apiKey = EncryptionUtils.encrypt(apiKey);
     }
 
+    @Override
+    public Double getTodayYield() {
+        return SolarEdgeExchange.getTodayYield(this);
+    }
+
+    @Override
+    public Double getCurrentPower() {
+        return SolarEdgeExchange.getCurrentPower(this);
+    }
+
+    @Override
+    public Status getStatus() {
+        return SolarEdgeExchange.getStatus(this);
+    }
 }
