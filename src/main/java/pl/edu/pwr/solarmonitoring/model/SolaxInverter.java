@@ -39,6 +39,11 @@ public class SolaxInverter extends Inverter {
     }
 
     @Override
+    public Double getTotalYield() {
+        return SolaxExchange.getTotalYield(this);
+    }
+
+    @Override
     public Double getCurrentPower() {
         return SolaxExchange.getCurrentPower(this);
     }

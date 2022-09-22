@@ -2,6 +2,7 @@ package pl.edu.pwr.solarmonitoring.model;
 
 import lombok.*;
 import pl.edu.pwr.solarmonitoring.exchange.inverters.SolarEdgeExchange;
+import pl.edu.pwr.solarmonitoring.exchange.inverters.SolaxExchange;
 import pl.edu.pwr.solarmonitoring.exchange.inverters.Status;
 import pl.edu.pwr.solarmonitoring.utils.EncryptionUtils;
 
@@ -34,6 +35,11 @@ public class SolarEdgeInverter extends Inverter {
 
     @Override
     public Double getTodayYield() {
+        return SolarEdgeExchange.getTodayYield(this);
+    }
+
+    @Override
+    public Double getTotalYield() {
         return SolarEdgeExchange.getTodayYield(this);
     }
 

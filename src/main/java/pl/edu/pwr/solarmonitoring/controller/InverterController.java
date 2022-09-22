@@ -72,11 +72,21 @@ public class InverterController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteInverter(Authentication authentication, @RequestParam Long id) {
+    public ResponseEntity<String> deleteInverter(Authentication authentication, @PathVariable Long id) {
         User user = UserUtils.fromAuthentication(authentication);
         try {
             inverterService.delete(user, id);
             return new ResponseEntity<>("Inverter with id: " + id + " was deleted", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/parameters/{id}")
+    public ResponseEntity<?> getInverterParameters(Authentication authentication, @PathVariable Long id) {
+        User user = UserUtils.fromAuthentication(authentication);
+        try {
+            return ResponseEntity.ok(inverterService.getParameters(user, id));
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
