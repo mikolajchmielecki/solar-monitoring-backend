@@ -3,6 +3,7 @@ package pl.edu.pwr.solarmonitoring.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.edu.pwr.solarmonitoring.exchange.inverters.Status;
 import pl.edu.pwr.solarmonitoring.model.Inverter;
 import pl.edu.pwr.solarmonitoring.model.SolarEdgeInverter;
 import pl.edu.pwr.solarmonitoring.model.SolaxInverter;
@@ -115,12 +116,8 @@ public class InverterServiceImpl implements InverterService {
     @Override
     public InverterParametersResponse getParameters(User user, Long id) {
         Inverter inverter = getInverterFromUser(user, id);
-        InverterParametersResponse response = InverterParametersResponse.builder()
-                .status(inverter.getStatus().name())
-                .currentPower(inverter.getCurrentPower())
-                .todayYield(inverter.getTodayYield())
-                .totalYield(inverter.getTotalYield())
-                .build();
+        InverterParametersResponse response = inverter.getInverterParameters();
+        log.debug("getParameters " + response);
         return response;
     }
 

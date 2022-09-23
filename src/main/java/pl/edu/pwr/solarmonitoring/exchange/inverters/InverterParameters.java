@@ -1,10 +1,9 @@
 package pl.edu.pwr.solarmonitoring.exchange.inverters;
 
+import pl.edu.pwr.solarmonitoring.model.response.InverterParametersResponse;
+
 public interface InverterParameters {
 
-    Double getTodayYield();
-    Double getTotalYield();
-    Double getCurrentPower();
-    Status getStatus();
+    InverterParametersResponse getInverterParameters();
 
 }

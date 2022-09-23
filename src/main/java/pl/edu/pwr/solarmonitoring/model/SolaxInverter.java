@@ -1,9 +1,8 @@
 package pl.edu.pwr.solarmonitoring.model;
 
-
 import lombok.*;
 import pl.edu.pwr.solarmonitoring.exchange.inverters.SolaxExchange;
-import pl.edu.pwr.solarmonitoring.exchange.inverters.Status;
+import pl.edu.pwr.solarmonitoring.model.response.InverterParametersResponse;
 import pl.edu.pwr.solarmonitoring.utils.EncryptionUtils;
 
 import javax.persistence.Column;
@@ -34,22 +33,7 @@ public class SolaxInverter extends Inverter {
     }
 
     @Override
-    public Double getTodayYield() {
-        return SolaxExchange.getTodayYield(this);
-    }
-
-    @Override
-    public Double getTotalYield() {
-        return SolaxExchange.getTotalYield(this);
-    }
-
-    @Override
-    public Double getCurrentPower() {
-        return SolaxExchange.getCurrentPower(this);
-    }
-
-    @Override
-    public Status getStatus() {
-        return SolaxExchange.getStatus(this);
+    public InverterParametersResponse getInverterParameters() {
+        return SolaxExchange.getInverterParameters(this);
     }
 }

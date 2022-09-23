@@ -4,6 +4,7 @@ import lombok.*;
 import pl.edu.pwr.solarmonitoring.exchange.inverters.SolarEdgeExchange;
 import pl.edu.pwr.solarmonitoring.exchange.inverters.SolaxExchange;
 import pl.edu.pwr.solarmonitoring.exchange.inverters.Status;
+import pl.edu.pwr.solarmonitoring.model.response.InverterParametersResponse;
 import pl.edu.pwr.solarmonitoring.utils.EncryptionUtils;
 
 import javax.persistence.Column;
@@ -34,22 +35,7 @@ public class SolarEdgeInverter extends Inverter {
     }
 
     @Override
-    public Double getTodayYield() {
-        return SolarEdgeExchange.getTodayYield(this);
-    }
-
-    @Override
-    public Double getTotalYield() {
-        return SolarEdgeExchange.getTodayYield(this);
-    }
-
-    @Override
-    public Double getCurrentPower() {
-        return SolarEdgeExchange.getCurrentPower(this);
-    }
-
-    @Override
-    public Status getStatus() {
-        return SolarEdgeExchange.getStatus(this);
+    public InverterParametersResponse getInverterParameters() {
+        return SolarEdgeExchange.getInverterParameters(this);
     }
 }

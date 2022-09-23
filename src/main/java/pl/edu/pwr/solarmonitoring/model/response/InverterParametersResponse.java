@@ -7,9 +7,15 @@ import lombok.Data;
 @Builder
 public class InverterParametersResponse {
 
+    // kWH
     private Double todayYield;
+
+    // kWH
     private Double totalYield;
+
+    // kW
     private Double currentPower;
+
     private String status;
 
 }

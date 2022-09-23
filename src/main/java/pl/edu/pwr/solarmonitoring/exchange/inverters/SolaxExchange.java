@@ -2,33 +2,50 @@ package pl.edu.pwr.solarmonitoring.exchange.inverters;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;;
 import pl.edu.pwr.solarmonitoring.model.SolaxInverter;
+import pl.edu.pwr.solarmonitoring.model.response.InverterParametersResponse;
 
 @Service
+@Slf4j
 public class SolaxExchange {
 
     private static final String URL = "https://www.solaxcloud.com:9443/proxy/api/getRealtimeInfo.do?tokenId=%s&sn=%s";
 
-    public static Double getTodayYield(SolaxInverter inverter) {
-        JsonObject response = getInverterResponse(inverter);
-        return response.getAsJsonObject("result").get("yieldtoday").getAsDouble();
+    public static InverterParametersResponse getInverterParameters(SolaxInverter solaxInverter) {
+        try {
+            JsonObject response = getInverterResponse(solaxInverter);
+            Status status = getStatus(response);
+            if (status != Status.COMMUNICATION_ERROR) {
+                return InverterParametersResponse.builder()
+                        .status(status.name())
+                        .currentPower(getCurrentPower(response))
+                        .todayYield(getTodayYield(response))
+                        .totalYield(getTotalYield(response))
+                        .build();
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return InverterParametersResponse.builder().status(Status.COMMUNICATION_ERROR.name()).build();
     }
 
-    public static Double getTotalYield(SolaxInverter inverter) {
-        JsonObject response = getInverterResponse(inverter);
+    private static Double getTodayYield(JsonObject response) {
+        return response.getAsJsonObject("result").get("yieldtoday").getAsDouble()/1000;
+    }
+
+    private static Double getTotalYield(JsonObject response) {
         return response.getAsJsonObject("result").get("yieldtotal").getAsDouble();
     }
 
-    public static Double getCurrentPower(SolaxInverter inverter) {
-        JsonObject response = getInverterResponse(inverter);
+    private static Double getCurrentPower(JsonObject response) {
         return response.getAsJsonObject("result").get("acpower").getAsDouble();
     }
 
-    public static Status getStatus(SolaxInverter inverter) {
+    private static Status getStatus(JsonObject response) {
         try {
-            JsonObject response = getInverterResponse(inverter);
             if (response.get("success").getAsBoolean()) {
                 switch (response.getAsJsonObject("result").get("inverterStatus").getAsInt()) {
                     case 102:
