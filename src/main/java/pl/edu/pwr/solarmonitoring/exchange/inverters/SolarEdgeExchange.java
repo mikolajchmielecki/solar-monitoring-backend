@@ -34,14 +34,14 @@ public class SolarEdgeExchange {
     }
 
     private static Double getTodayYield(JsonObject response) {
-        return response.getAsJsonObject("overview").get("lastDayData").getAsJsonObject().get("energy").getAsDouble()/1000;
+        return response.getAsJsonObject("overview").get("lastDayData").getAsJsonObject().get("energy").getAsDouble() / 1000;
     }
 
     private static Double getTotalYield(JsonObject response) {
         String exponentialNotation = response.getAsJsonObject("overview").get("lifeTimeData").getAsJsonObject().get("energy").getAsString();
         Double base = Double.parseDouble(exponentialNotation.split("E")[0]);
         Double power = Double.parseDouble(exponentialNotation.split("E")[1]);
-        return Math.pow(base, power)/1000;
+        return base * Math.pow(10, power) / 1000;
     }
 
     private static Double getCurrentPower(JsonObject response) {

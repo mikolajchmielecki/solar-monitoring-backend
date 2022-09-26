@@ -33,7 +33,7 @@ public class SolaxExchange {
     }
 
     private static Double getTodayYield(JsonObject response) {
-        return response.getAsJsonObject("result").get("yieldtoday").getAsDouble()/1000;
+        return response.getAsJsonObject("result").get("yieldtoday").getAsDouble();
     }
 
     private static Double getTotalYield(JsonObject response) {
