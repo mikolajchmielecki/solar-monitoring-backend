@@ -1,7 +1,8 @@
 package pl.edu.pwr.solarmonitoring.model;
 
-
 import lombok.*;
+import pl.edu.pwr.solarmonitoring.exchange.inverters.SolaxExchange;
+import pl.edu.pwr.solarmonitoring.model.response.InverterParametersResponse;
 import pl.edu.pwr.solarmonitoring.utils.EncryptionUtils;
 
 import javax.persistence.Column;
@@ -29,5 +30,10 @@ public class SolaxInverter extends Inverter {
 
     public void setTokenId(String tokenId) {
         this.tokenId = EncryptionUtils.encrypt(tokenId);
+    }
+
+    @Override
+    public InverterParametersResponse getInverterParameters() {
+        return SolaxExchange.getInverterParameters(this);
     }
 }

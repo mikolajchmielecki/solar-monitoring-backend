@@ -1,6 +1,10 @@
 package pl.edu.pwr.solarmonitoring.model;
 
 import lombok.*;
+import pl.edu.pwr.solarmonitoring.exchange.inverters.SolarEdgeExchange;
+import pl.edu.pwr.solarmonitoring.exchange.inverters.SolaxExchange;
+import pl.edu.pwr.solarmonitoring.exchange.inverters.Status;
+import pl.edu.pwr.solarmonitoring.model.response.InverterParametersResponse;
 import pl.edu.pwr.solarmonitoring.utils.EncryptionUtils;
 
 import javax.persistence.Column;
@@ -30,4 +34,8 @@ public class SolarEdgeInverter extends Inverter {
         this.apiKey = EncryptionUtils.encrypt(apiKey);
     }
 
+    @Override
+    public InverterParametersResponse getInverterParameters() {
+        return SolarEdgeExchange.getInverterParameters(this);
+    }
 }

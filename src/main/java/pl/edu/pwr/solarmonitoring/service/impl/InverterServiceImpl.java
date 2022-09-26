@@ -3,6 +3,7 @@ package pl.edu.pwr.solarmonitoring.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.edu.pwr.solarmonitoring.exchange.inverters.Status;
 import pl.edu.pwr.solarmonitoring.model.Inverter;
 import pl.edu.pwr.solarmonitoring.model.SolarEdgeInverter;
 import pl.edu.pwr.solarmonitoring.model.SolaxInverter;
@@ -11,6 +12,7 @@ import pl.edu.pwr.solarmonitoring.model.mappers.SolarEdgeInverterMapper;
 import pl.edu.pwr.solarmonitoring.model.mappers.SolaxInverterMapper;
 import pl.edu.pwr.solarmonitoring.model.request.SolarEdgeRequest;
 import pl.edu.pwr.solarmonitoring.model.request.SolaxRequest;
+import pl.edu.pwr.solarmonitoring.model.response.InverterParametersResponse;
 import pl.edu.pwr.solarmonitoring.repository.InverterRepository;
 import pl.edu.pwr.solarmonitoring.repository.UserRepository;
 import pl.edu.pwr.solarmonitoring.service.InverterService;
@@ -64,25 +66,19 @@ public class InverterServiceImpl implements InverterService {
             throw new IllegalArgumentException(msg);
         }
 
-        Optional<Inverter> inverter = getInverterFromUser(user, request.getId());
-        if (!inverter.isPresent()) {
-            String msg = user + " hasn't that inverter";
-            log.error(msg);
-            throw new IllegalArgumentException(msg);
-        }
+        SolaxInverter inverter = (SolaxInverter) getInverterFromUser(user, request.getId());
 
-        SolaxInverter solaxInverter = (SolaxInverter) inverter.get();
         if (request.getName() != null) {
-            solaxInverter.setName(request.getName());
+            inverter.setName(request.getName());
         }
         if (request.getSerialNumber() != null) {
-            solaxInverter.setSerialNumber(request.getSerialNumber());
+            inverter.setSerialNumber(request.getSerialNumber());
         }
         if (request.getTokenId() != null) {
-            solaxInverter.setTokenId(request.getTokenId());
+            inverter.setTokenId(request.getTokenId());
         }
 
-        solaxRepository.save(solaxInverter);
+        solaxRepository.save(inverter);
     }
 
     @Override
@@ -94,46 +90,47 @@ public class InverterServiceImpl implements InverterService {
             throw new IllegalArgumentException(msg);
         }
 
-        Optional<Inverter> inverter = getInverterFromUser(user, request.getId());
-        if (!inverter.isPresent()) {
-            String msg = user + " hasn't that inverter";
-            log.error(msg);
-            throw new IllegalArgumentException(msg);
-        }
+        SolarEdgeInverter inverter = (SolarEdgeInverter) getInverterFromUser(user, request.getId());
 
-        SolarEdgeInverter solaxInverter = (SolarEdgeInverter) inverter.get();
         if (request.getName() != null) {
-            solaxInverter.setName(request.getName());
+            inverter.setName(request.getName());
         }
         if (request.getSiteId() != null) {
-            solaxInverter.setSiteId(request.getSiteId());
+            inverter.setSiteId(request.getSiteId());
         }
         if (request.getApiKey() != null) {
-            solaxInverter.setApiKey(request.getApiKey());
+            inverter.setApiKey(request.getApiKey());
         }
 
-        solarEdgeRepository.save(solaxInverter);
+        solarEdgeRepository.save(inverter);
     }
 
     @Override
     public void delete(User user, Long id) {
         log.debug("Delete inverter with id: " + id + " from " + user);
-        Optional<Inverter> inverterToRemove = getInverterFromUser(user, id);
-        if (inverterToRemove.isPresent()) {
-            user.getInverters().remove(inverterToRemove.get());
-        } else {
-            String msg = "User hasn't inverter with id: " + id;
-            log.error(msg);
-            throw new IllegalArgumentException();
-        }
+        Inverter inverterToRemove = getInverterFromUser(user, id);
+        user.getInverters().remove(inverterToRemove);
         userRepository.save(user);
     }
 
-    private Optional<Inverter> getInverterFromUser(User user, Long id) {
+    @Override
+    public InverterParametersResponse getParameters(User user, Long id) {
+        Inverter inverter = getInverterFromUser(user, id);
+        InverterParametersResponse response = inverter.getInverterParameters();
+        log.debug("getParameters " + response);
+        return response;
+    }
+
+    private Inverter getInverterFromUser(User user, Long id) {
         Set<Inverter> inverters = user.getInverters();
         Optional<Inverter> inverter = inverters.stream()
                 .filter(i -> i.getId().equals(id))
                 .findAny();
-        return inverter;
+        if (!inverter.isPresent()) {
+            String msg = "User hasn't inverter with id: " + id;
+            log.error(msg);
+            throw new IllegalArgumentException(msg);
+        }
+        return inverter.get();
     }
 }
