@@ -27,11 +27,7 @@ public class EnergaExchange {
         log.debug("getEnergyData for " + user);
         if (user.getCounter() != null) {
             System.setProperty("webdriver.chrome.driver", "C:\\Users\\chmimiko\\Downloads\\chromedriver_win32\\chromedriver.exe");
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--window-size=1920,1080");
-            options.addArguments("--start-maximized");
-            options.addArguments("--headless");
-            WebDriver webDriver = new ChromeDriver(options);
+            WebDriver webDriver = new ChromeDriver();
             webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
             login(webDriver, user);
 
