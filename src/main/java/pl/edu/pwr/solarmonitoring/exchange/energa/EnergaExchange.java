@@ -5,28 +5,40 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import pl.edu.pwr.solarmonitoring.model.User;
 
+import java.net.URL;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Collection;
 
 @Component
 @Slf4j
 public class EnergaExchange {
 
-    private static final String URL = "https://mojlicznik.energa-operator.pl/";
+    private static final String ENERGA_URL = "https://mojlicznik.energa-operator.pl/";
+
+    @Value("${selenium.grid.url}")
+    private String GRID_URL;
+
 
     public EnergaData getEnergaDataForBeforeMonth(User user) {
         log.debug("getEnergyData for " + user);
         if (user.getCounter() != null) {
+            WebDriver webDriver = null;
             try {
                 System.setProperty("webdriver.chrome.driver", "C:\\Users\\chmimiko\\Downloads\\chromedriver_win32\\chromedriver.exe");
-                WebDriver webDriver = new ChromeDriver();
+                FirefoxOptions options = new FirefoxOptions();
+                webDriver = new RemoteWebDriver(new URL(GRID_URL), options);
                 webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
                 login(webDriver, user);
 
@@ -45,6 +57,9 @@ public class EnergaExchange {
             } catch (Exception e) {
                 String msg = "Error during communication with Energa website";
                 log.error(e.getMessage());
+                if (webDriver != null) {
+                    webDriver.quit();
+                }
                 throw new RuntimeException(msg, e.getCause());
             }
         } else {
@@ -84,7 +99,7 @@ public class EnergaExchange {
     }
 
     private void login(WebDriver webDriver, User user) {
-        webDriver.get(URL);
+        webDriver.get(ENERGA_URL);
         webDriver.findElement(By.xpath("//*[@id=\"loginRadio\"]")).click();
         webDriver.findElement(By.xpath("//*[@id=\"j_username\"]")).sendKeys(user.getCounter().getLogin());
         webDriver.findElement(By.xpath("//*[@id=\"j_password\"]")).sendKeys(user.getCounter().getPassword());
