@@ -4,6 +4,7 @@ import lombok.Data;
 import pl.edu.pwr.solarmonitoring.exchange.inverters.InverterParameters;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "inverters")
@@ -17,5 +18,11 @@ public abstract class Inverter implements InverterParameters {
 
     @Column
     private String name;
+
+    @OneToMany
+    private List<HistoryData> producedEnergy;
+
+    @Column
+    private Double beforeEnergy;
 
 }

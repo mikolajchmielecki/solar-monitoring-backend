@@ -4,6 +4,7 @@ import lombok.*;
 import pl.edu.pwr.solarmonitoring.utils.EncryptionUtils;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -23,6 +24,14 @@ public class Counter {
 
     @Column
     private String password;
+
+    @Column
+    @OneToMany
+    private List<HistoryData> remitEnergy;
+
+    @Column
+    @OneToMany
+    private List<HistoryData> chargeEnergy;
 
     public String getPassword() {
         return password != null ? EncryptionUtils.decrypt(password) : null;
