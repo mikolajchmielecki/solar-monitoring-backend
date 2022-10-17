@@ -8,17 +8,20 @@ import pl.edu.pwr.solarmonitoring.model.Inverter;
 import pl.edu.pwr.solarmonitoring.model.SolarEdgeInverter;
 import pl.edu.pwr.solarmonitoring.model.SolaxInverter;
 import pl.edu.pwr.solarmonitoring.model.User;
+import pl.edu.pwr.solarmonitoring.model.mappers.InverterMapper;
 import pl.edu.pwr.solarmonitoring.model.mappers.SolarEdgeInverterMapper;
 import pl.edu.pwr.solarmonitoring.model.mappers.SolaxInverterMapper;
 import pl.edu.pwr.solarmonitoring.model.request.SolarEdgeRequest;
 import pl.edu.pwr.solarmonitoring.model.request.SolaxRequest;
 import pl.edu.pwr.solarmonitoring.model.response.InverterParametersResponse;
+import pl.edu.pwr.solarmonitoring.model.response.InverterResponse;
 import pl.edu.pwr.solarmonitoring.repository.InverterRepository;
 import pl.edu.pwr.solarmonitoring.repository.UserRepository;
 import pl.edu.pwr.solarmonitoring.service.InverterService;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -119,6 +122,11 @@ public class InverterServiceImpl implements InverterService {
         InverterParametersResponse response = inverter.getInverterParameters();
         log.debug("getParameters " + response);
         return response;
+    }
+
+    @Override
+    public Set<InverterResponse> findAllInverters(User user) {
+        return user.getInverters().stream().map(i -> InverterMapper.INSTANCE.entityToResponse(i)).collect(Collectors.toSet());
     }
 
     private Inverter getInverterFromUser(User user, Long id) {

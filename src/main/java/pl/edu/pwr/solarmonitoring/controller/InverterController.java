@@ -9,6 +9,7 @@ import pl.edu.pwr.solarmonitoring.model.Inverter;
 import pl.edu.pwr.solarmonitoring.model.User;
 import pl.edu.pwr.solarmonitoring.model.request.SolarEdgeRequest;
 import pl.edu.pwr.solarmonitoring.model.request.SolaxRequest;
+import pl.edu.pwr.solarmonitoring.model.response.InverterResponse;
 import pl.edu.pwr.solarmonitoring.service.InverterService;
 import pl.edu.pwr.solarmonitoring.utils.UserUtils;
 
@@ -22,9 +23,13 @@ public class InverterController {
     private final InverterService inverterService;
 
     @GetMapping("/all")
-    public Set<Inverter> findAllInverters(Authentication authentication) {
+    public ResponseEntity<?> findAllInverters(Authentication authentication) {
         User user = UserUtils.fromAuthentication(authentication);
-        return user.getInverters();
+        try {
+            return ResponseEntity.ok(inverterService.findAllInverters(user));
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/solar-edge/add")
