@@ -6,8 +6,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import pl.edu.pwr.solarmonitoring.exchange.energa.EnergaData;
 import pl.edu.pwr.solarmonitoring.exchange.energa.EnergaExchange;
-import pl.edu.pwr.solarmonitoring.model.HistoryData;
+import pl.edu.pwr.solarmonitoring.model.ChargedHistoryData;
 import pl.edu.pwr.solarmonitoring.model.Inverter;
+import pl.edu.pwr.solarmonitoring.model.ProducedHistoryData;
+import pl.edu.pwr.solarmonitoring.model.RemittedHistoryData;
 import pl.edu.pwr.solarmonitoring.model.User;
 import pl.edu.pwr.solarmonitoring.repository.UserRepository;
 
@@ -65,13 +67,15 @@ public class ScheduledTasks {
                         .collect(Collectors.toList()));
 
                 // add values
-                user.getCounter().getChargeEnergy().add(HistoryData.builder()
+                user.getCounter().getChargeEnergy().add(ChargedHistoryData.builder()
                         .value(energaData.getChargeEnergy())
                         .date(getFirstDayOfBeforeMonth())
+                        .counter(user.getCounter())
                         .build());
-                user.getCounter().getRemitEnergy().add(HistoryData.builder()
+                user.getCounter().getRemitEnergy().add(RemittedHistoryData.builder()
                         .value(energaData.getRemitEnergy())
                         .date(getFirstDayOfBeforeMonth())
+                        .counter(user.getCounter())
                         .build());
                 userRepository.save(user);
                 return;
@@ -102,9 +106,10 @@ public class ScheduledTasks {
 
 
                 // add
-                inverter.getProducedEnergy().add(HistoryData.builder()
+                inverter.getProducedEnergy().add(ProducedHistoryData.builder()
                                 .date(getFirstDayOfBeforeMonth())
                                 .value(totalYield - inverter.getBeforeEnergy())
+                                .inverter(inverter)
                                 .build());
                 return;
             } catch (Exception e) {

@@ -20,8 +20,8 @@ public abstract class Inverter implements InverterParameters {
     @Column
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
-    private List<HistoryData> producedEnergy;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true, mappedBy = "inverter")
+    private List<ProducedHistoryData> producedEnergy;
 
     @Column
     private Double beforeEnergy;

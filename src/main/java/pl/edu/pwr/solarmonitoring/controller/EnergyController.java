@@ -7,9 +7,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.edu.pwr.solarmonitoring.model.User;
 import pl.edu.pwr.solarmonitoring.scheduling.ScheduledTasks;
+import pl.edu.pwr.solarmonitoring.service.EnergyService;
+import pl.edu.pwr.solarmonitoring.utils.UserUtils;
 
 @RestController
 @RequestMapping("api/v1/energy")
@@ -17,7 +19,12 @@ import pl.edu.pwr.solarmonitoring.scheduling.ScheduledTasks;
 public class EnergyController {
 
     private final ScheduledTasks scheduledTasks;
+    private final EnergyService energyService;
 
+    /**
+     * only for testing
+     * @return
+     */
     @GetMapping("/run")
     public ResponseEntity getEnergyInBeforeMonth() {
         scheduledTasks.saveMonthlyEnergaData();
@@ -26,8 +33,13 @@ public class EnergyController {
     }
 
     @GetMapping("/get/{year}")
-    public ResponseEntity getArchivedEnergy(Authentication authentication, @PathVariable Integer year) {
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<?> getArchivedEnergy(Authentication authentication, @PathVariable Integer year) {
+        User user = UserUtils.fromAuthentication(authentication);
+        try {
+            return ResponseEntity.ok(energyService.getArchivedEnergy(user, year));
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

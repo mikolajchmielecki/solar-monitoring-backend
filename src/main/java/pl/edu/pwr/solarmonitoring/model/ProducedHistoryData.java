@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
@@ -20,17 +21,20 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table(name = "history_datas")
-public class HistoryData {
+@Table(name = "produced_history_data")
+public class ProducedHistoryData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @Column
-    private Double value;
+    protected Double value;
 
     @Column
-    private LocalDate date;
+    protected LocalDate date;
+
+    @ManyToOne
+    private Inverter inverter;
 
 }

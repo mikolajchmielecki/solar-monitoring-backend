@@ -25,13 +25,11 @@ public class Counter {
     @Column
     private String password;
 
-    @Column
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
-    private List<HistoryData> remitEnergy;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true, mappedBy = "counter")
+    private List<RemittedHistoryData> remitEnergy;
 
-    @Column
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
-    private List<HistoryData> chargeEnergy;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true, mappedBy = "counter")
+    private List<ChargedHistoryData> chargeEnergy;
 
     public String getPassword() {
         return password != null ? EncryptionUtils.decrypt(password) : null;
