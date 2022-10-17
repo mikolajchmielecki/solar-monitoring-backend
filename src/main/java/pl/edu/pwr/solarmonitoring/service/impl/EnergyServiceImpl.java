@@ -16,6 +16,7 @@ import pl.edu.pwr.solarmonitoring.service.EnergyService;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -44,19 +45,38 @@ public class EnergyServiceImpl implements EnergyService {
                 .stream()
                 .map(d -> HistoryDataMapper.INSTANCE.fromRemittedHistoryData(d))
                 .collect(Collectors.toList());
+
+        Map<LocalDate, HistoryDataResponse> totalProducedEnergyMap = new HashMap<>();
         Map<String, Collection<HistoryDataResponse>> producedHistoryDataMap = new HashMap<>();
         for (Inverter inverter : user.getInverters()) {
-            producedHistoryDataMap.put(inverter.getName(), producedHistoryDataRepository
+            Collection<HistoryDataResponse> producedEnergy = producedHistoryDataRepository
                     .findProducedHistoryDataByInverterAndDateBetween(inverter, startDate, endDate)
                     .stream()
                     .map(d -> HistoryDataMapper.INSTANCE.fromProducedHistoryData(d))
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.toList());
+            producedHistoryDataMap.put(inverter.getName(), producedEnergy);
+
+            for (HistoryDataResponse data : producedEnergy) {
+                if (!totalProducedEnergyMap.containsKey(data.getDate())) {
+                    totalProducedEnergyMap.put(data.getDate(), HistoryDataResponse.builder()
+                            .date(data.getDate())
+                            .value(data.getValue())
+                            .build());
+                } else {
+                    Double value = totalProducedEnergyMap.get(data.getDate()).getValue();
+                    totalProducedEnergyMap.get(data.getDate()).setValue(value + data.getValue());
+                }
+            }
         }
 
+        Collection<HistoryDataResponse> totalProducedEnergy = totalProducedEnergyMap.values();
+
         return ArchivedEnergyResponse.builder()
+                .year(year)
                 .chargeEnergy(chargedHistoryData)
                 .remitEnergy(remittedHistoryData)
                 .producedEnergy(producedHistoryDataMap)
+                .totalProducedEnergy(totalProducedEnergy)
                 .build();
     }
 }

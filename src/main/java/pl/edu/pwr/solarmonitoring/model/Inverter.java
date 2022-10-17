@@ -3,7 +3,6 @@ package pl.edu.pwr.solarmonitoring.model;
 import lombok.Data;
 import lombok.ToString;
 import pl.edu.pwr.solarmonitoring.exchange.inverters.InverterParameters;
-import pl.edu.pwr.solarmonitoring.model.response.InverterParametersResponse;
 
 import javax.persistence.*;
 import java.util.List;
