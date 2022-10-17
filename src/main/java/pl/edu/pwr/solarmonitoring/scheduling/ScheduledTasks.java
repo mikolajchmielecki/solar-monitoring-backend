@@ -13,6 +13,7 @@ import pl.edu.pwr.solarmonitoring.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -54,6 +55,16 @@ public class ScheduledTasks {
         for (int i = 0; i < REPEATS; i++) {
             try {
                 EnergaData energaData = energaExchange.getEnergaDataForBeforeMonth(user);
+
+                // remove duplicates
+                user.getCounter().getChargeEnergy().removeAll(user.getCounter().getChargeEnergy().stream()
+                        .filter(d -> d.getDate().equals(getFirstDayOfBeforeMonth()))
+                        .collect(Collectors.toList()));
+                user.getCounter().getRemitEnergy().removeAll(user.getCounter().getRemitEnergy().stream()
+                        .filter(d -> d.getDate().equals(getFirstDayOfBeforeMonth()))
+                        .collect(Collectors.toList()));
+
+                // add values
                 user.getCounter().getChargeEnergy().add(HistoryData.builder()
                         .value(energaData.getChargeEnergy())
                         .date(getFirstDayOfBeforeMonth())
@@ -85,6 +96,12 @@ public class ScheduledTasks {
                     return;
                 }
 
+                // remove duplicates
+                inverter.getProducedEnergy().removeAll(inverter.getProducedEnergy().stream()
+                        .filter(d -> d.getDate().equals(getFirstDayOfBeforeMonth())).collect(Collectors.toList()));
+
+
+                // add
                 inverter.getProducedEnergy().add(HistoryData.builder()
                                 .date(getFirstDayOfBeforeMonth())
                                 .value(totalYield - inverter.getBeforeEnergy())
