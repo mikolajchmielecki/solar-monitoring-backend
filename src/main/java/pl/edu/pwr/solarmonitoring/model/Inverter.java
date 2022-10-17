@@ -2,6 +2,7 @@ package pl.edu.pwr.solarmonitoring.model;
 
 import lombok.Data;
 import pl.edu.pwr.solarmonitoring.exchange.inverters.InverterParameters;
+import pl.edu.pwr.solarmonitoring.model.response.InverterParametersResponse;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,10 +20,9 @@ public abstract class Inverter implements InverterParameters {
     @Column
     private String name;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<HistoryData> producedEnergy;
 
     @Column
     private Double beforeEnergy;
-
 }
