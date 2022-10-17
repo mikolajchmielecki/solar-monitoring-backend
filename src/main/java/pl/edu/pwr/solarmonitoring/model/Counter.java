@@ -25,9 +25,11 @@ public class Counter {
     @Column
     private String password;
 
+    @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true, mappedBy = "counter")
     private List<RemittedHistoryData> remitEnergy;
 
+    @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true, mappedBy = "counter")
     private List<ChargedHistoryData> chargeEnergy;
 
