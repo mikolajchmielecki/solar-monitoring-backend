@@ -10,13 +10,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${cross.origin}")
-    private String crossOrigin;
+    @Value("${cross.origin1}")
+    private String crossOrigin1;
+
+    @Value("${cross.origin2}")
+    private String crossOrigin2;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOrigins(crossOrigin)
+                .allowedOrigins(crossOrigin1, crossOrigin2)
                 .allowedMethods("PUT", "DELETE", "GET", "PATCH", "POST")
                 .allowCredentials(false).maxAge(3600);
     }
