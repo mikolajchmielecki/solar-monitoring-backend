@@ -12,7 +12,7 @@ import pl.edu.pwr.solarmonitoring.service.CounterService;
 import pl.edu.pwr.solarmonitoring.utils.UserUtils;
 
 @RestController
-@RequestMapping(name = "/api/v1/counter", produces= MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/api/v1/counter")
 @RequiredArgsConstructor
 public class CounterController {
 

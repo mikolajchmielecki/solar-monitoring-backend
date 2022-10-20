@@ -15,7 +15,7 @@ import pl.edu.pwr.solarmonitoring.service.EnergyService;
 import pl.edu.pwr.solarmonitoring.utils.UserUtils;
 
 @RestController
-@RequestMapping(name = "api/v1/energy", produces= MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("api/v1/energy")
 @RequiredArgsConstructor
 public class EnergyController {
 

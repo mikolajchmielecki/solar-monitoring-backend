@@ -27,7 +27,7 @@ import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(name = "/api/v1/user", produces=MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/user", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
     private final UserService userService;
@@ -38,7 +38,7 @@ public class UserController {
 
     private final UserDetailsService jwtInMemoryUserDetailsService;
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
             throws Exception {
 

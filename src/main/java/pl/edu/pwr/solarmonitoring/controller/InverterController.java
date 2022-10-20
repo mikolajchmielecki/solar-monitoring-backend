@@ -17,7 +17,7 @@ import pl.edu.pwr.solarmonitoring.utils.UserUtils;
 import java.util.Set;
 
 @RestController
-@RequestMapping(name = "/api/v1/inverter", produces= MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/api/v1/inverter")
 @RequiredArgsConstructor
 public class InverterController {
 
