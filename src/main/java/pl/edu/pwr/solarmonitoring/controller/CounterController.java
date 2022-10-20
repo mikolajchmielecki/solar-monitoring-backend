@@ -2,6 +2,7 @@ package pl.edu.pwr.solarmonitoring.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import pl.edu.pwr.solarmonitoring.service.CounterService;
 import pl.edu.pwr.solarmonitoring.utils.UserUtils;
 
 @RestController
-@RequestMapping("/api/v1/counter")
+@RequestMapping(name = "/api/v1/counter", produces= MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class CounterController {
 

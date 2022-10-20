@@ -2,6 +2,7 @@ package pl.edu.pwr.solarmonitoring.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,7 +27,7 @@ import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user")
+@RequestMapping(name = "/api/v1/user", produces=MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
     private final UserService userService;

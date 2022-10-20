@@ -2,6 +2,7 @@ package pl.edu.pwr.solarmonitoring.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ import pl.edu.pwr.solarmonitoring.utils.UserUtils;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/v1/inverter")
+@RequestMapping(name = "/api/v1/inverter", produces= MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class InverterController {
 
