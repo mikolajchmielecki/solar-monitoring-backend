@@ -19,6 +19,7 @@ import pl.edu.pwr.solarmonitoring.model.request.JwtRequest;
 import pl.edu.pwr.solarmonitoring.model.request.UserEditRequest;
 import pl.edu.pwr.solarmonitoring.model.request.UserRequest;
 import pl.edu.pwr.solarmonitoring.model.response.JwtResponse;
+import pl.edu.pwr.solarmonitoring.model.response.StringResponse;
 import pl.edu.pwr.solarmonitoring.service.UserService;
 import pl.edu.pwr.solarmonitoring.utils.UserUtils;
 
@@ -27,7 +28,7 @@ import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/v1/user", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     private final UserService userService;
@@ -39,37 +40,39 @@ public class UserController {
     private final UserDetailsService jwtInMemoryUserDetailsService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
-            throws Exception {
+    public ResponseEntity createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) {
+        try {
+            authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+            final UserDetails userDetails = jwtInMemoryUserDetailsService
+                    .loadUserByUsername(authenticationRequest.getUsername());
 
-        final UserDetails userDetails = jwtInMemoryUserDetailsService
-                .loadUserByUsername(authenticationRequest.getUsername());
+            final String token = jwtTokenUtil.generateToken(userDetails);
 
-        final String token = jwtTokenUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new JwtResponse(token));
+            return ResponseEntity.ok(new JwtResponse(token));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new StringResponse(e.getMessage()));
+        }
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity createUser(@RequestBody UserRequest userRequest) {
         try {
             userService.createUser(userRequest);
-            return new ResponseEntity<>(String.format("User %s created", userRequest.getUsername()), HttpStatus.CREATED);
+            return new ResponseEntity(new StringResponse(String.format("User %s created", userRequest.getUsername())), HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new StringResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<String> updateUser(Authentication authentication, @RequestBody UserEditRequest userEditRequest) {
+    public ResponseEntity updateUser(Authentication authentication, @RequestBody UserEditRequest userEditRequest) {
         try {
             User user = UserUtils.fromAuthentication(authentication);
             userService.updateUser(user, userEditRequest);
-            return new ResponseEntity<>(String.format("User %s updated", user.getUsername()), HttpStatus.OK);
+            return new ResponseEntity(new StringResponse(String.format("User %s updated", user.getUsername())), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new StringResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -78,9 +81,9 @@ public class UserController {
         try {
             User user = UserUtils.fromAuthentication(authentication);
             userService.deleteUser(user);
-            return new ResponseEntity<>(String.format("User %s deleted", user.getUsername()), HttpStatus.OK);
+            return new ResponseEntity(new StringResponse(String.format("User %s deleted", user.getUsername())), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new StringResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 

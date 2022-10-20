@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pwr.solarmonitoring.model.User;
+import pl.edu.pwr.solarmonitoring.model.response.StringResponse;
 import pl.edu.pwr.solarmonitoring.scheduling.ScheduledTasks;
 import pl.edu.pwr.solarmonitoring.service.EnergyService;
 import pl.edu.pwr.solarmonitoring.utils.UserUtils;
@@ -34,12 +35,12 @@ public class EnergyController {
     }
 
     @GetMapping("/get/{year}")
-    public ResponseEntity<?> getArchivedEnergy(Authentication authentication, @PathVariable Integer year) {
+    public ResponseEntity getArchivedEnergy(Authentication authentication, @PathVariable Integer year) {
         User user = UserUtils.fromAuthentication(authentication);
         try {
             return ResponseEntity.ok(energyService.getArchivedEnergy(user, year));
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new StringResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
