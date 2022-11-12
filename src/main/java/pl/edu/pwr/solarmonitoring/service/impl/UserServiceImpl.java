@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import pl.edu.pwr.solarmonitoring.model.User;
 import pl.edu.pwr.solarmonitoring.model.request.UserEditRequest;
 import pl.edu.pwr.solarmonitoring.model.request.UserRequest;
+import pl.edu.pwr.solarmonitoring.model.response.UserResponse;
 import pl.edu.pwr.solarmonitoring.repository.UserRepository;
 import pl.edu.pwr.solarmonitoring.service.UserService;
 import pl.edu.pwr.solarmonitoring.utils.EncryptionUtils;
@@ -88,6 +89,16 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(User user) {
         log.debug("Delete user " + user);
         userRepository.delete(user);
+    }
+
+    @Override
+    public UserResponse getUser(User user) {
+        return UserResponse.builder()
+                .username(user.getUsername())
+                .firstName(user.getFirstName())
+                .secondName(user.getSecondName())
+                .email(user.getEmail())
+                .build();
     }
 
 }

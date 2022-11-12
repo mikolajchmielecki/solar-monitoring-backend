@@ -20,6 +20,7 @@ import pl.edu.pwr.solarmonitoring.model.request.UserEditRequest;
 import pl.edu.pwr.solarmonitoring.model.request.UserRequest;
 import pl.edu.pwr.solarmonitoring.model.response.JwtResponse;
 import pl.edu.pwr.solarmonitoring.model.response.StringResponse;
+import pl.edu.pwr.solarmonitoring.model.response.UserResponse;
 import pl.edu.pwr.solarmonitoring.service.UserService;
 import pl.edu.pwr.solarmonitoring.utils.UserUtils;
 
@@ -52,6 +53,17 @@ public class UserController {
             return ResponseEntity.ok(new JwtResponse(token));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new StringResponse(e.getMessage()));
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity getUser(Authentication authentication) {
+        try {
+            User user = UserUtils.fromAuthentication(authentication);
+            UserResponse response = userService.getUser(user);
+            return new ResponseEntity(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(new StringResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
