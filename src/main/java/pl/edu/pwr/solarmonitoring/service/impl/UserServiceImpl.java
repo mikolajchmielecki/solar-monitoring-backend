@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user, UserEditRequest userEditRequest) {
         log.debug("Update user " + user + " " + userEditRequest);
-        if (StringUtils.equals(user.getUsername(), userEditRequest.getUsername()) && userRepository.findByUsername(userEditRequest.getUsername()).isPresent()) {
+        if (!StringUtils.equals(user.getUsername(), userEditRequest.getUsername()) && userRepository.findByUsername(userEditRequest.getUsername()).isPresent()) {
             String msg = String.format("User with username: %s exists", userEditRequest.getUsername());
             log.debug(msg);
             throw new IllegalArgumentException(msg);
