@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.edu.pwr.solarmonitoring.model.Counter;
 import pl.edu.pwr.solarmonitoring.model.User;
 import pl.edu.pwr.solarmonitoring.model.request.CounterRequest;
+import pl.edu.pwr.solarmonitoring.model.response.CounterResponse;
 import pl.edu.pwr.solarmonitoring.repository.UserRepository;
 import pl.edu.pwr.solarmonitoring.service.CounterService;
 
@@ -31,6 +32,11 @@ public class CounterServiceImpl implements CounterService {
 
         user.setCounter(counter);
         userRepository.save(user);
+    }
+
+    @Override
+    public CounterResponse get(User user) {
+        return CounterResponse.builder().login(user.getCounter().getLogin()).build();
     }
 
 }

@@ -2,6 +2,7 @@ package pl.edu.pwr.solarmonitoring.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,16 +13,24 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import pl.edu.pwr.solarmonitoring.utils.EncryptionUtils;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Value("${cross.origin1}")
+	private String crossOrigin1;
+
+	@Value("${cross.origin2}")
+	private String crossOrigin2;
 
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -50,8 +59,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+		corsConfiguration.setAllowedOrigins(List.of(crossOrigin1, crossOrigin2));
+		corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
+		corsConfiguration.setAllowCredentials(true);
+		corsConfiguration.setExposedHeaders(List.of("Authorization"));
+
+
 		// We don't need CSRF for this example
-		httpSecurity.csrf().disable()
+		httpSecurity.cors().configurationSource(request -> corsConfiguration).and()
+				.csrf().disable()
 				// dont authenticate this particular request
 				.authorizeRequests().antMatchers(
 						"/api/v1/user/authenticate",

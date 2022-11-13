@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.solarmonitoring.model.User;
 import pl.edu.pwr.solarmonitoring.model.request.CounterRequest;
+import pl.edu.pwr.solarmonitoring.model.response.CounterResponse;
 import pl.edu.pwr.solarmonitoring.model.response.StringResponse;
 import pl.edu.pwr.solarmonitoring.service.CounterService;
 import pl.edu.pwr.solarmonitoring.utils.UserUtils;
@@ -25,6 +26,17 @@ public class CounterController {
         try {
             counterService.update(user, counterRequest);
             return new ResponseEntity(new StringResponse("Counter " + counterRequest + " was updated."), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(new StringResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("get")
+    public ResponseEntity getCounter(Authentication authentication) {
+        User user = UserUtils.fromAuthentication(authentication);
+        try {
+            CounterResponse counterResponse = counterService.get(user);
+            return new ResponseEntity(counterResponse, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(new StringResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
