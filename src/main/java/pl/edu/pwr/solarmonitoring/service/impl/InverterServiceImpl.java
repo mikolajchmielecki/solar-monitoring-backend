@@ -125,6 +125,18 @@ public class InverterServiceImpl implements InverterService {
     }
 
     @Override
+    public InverterResponse getInverter(User user, Long id) {
+        Inverter inverter = getInverterFromUser(user, id);
+        InverterResponse response = InverterResponse.builder()
+                .id(inverter.getId())
+                .name(inverter.getName())
+                .credentials(inverter.getCredentials())
+                .type(inverter.getType())
+                .build();
+        return response;
+    }
+
+    @Override
     public Set<InverterResponse> findAllInverters(User user) {
         return user.getInverters().stream().map(i -> InverterMapper.INSTANCE.entityToResponse(i)).collect(Collectors.toSet());
     }

@@ -10,6 +10,8 @@ import pl.edu.pwr.solarmonitoring.utils.EncryptionUtils;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "solar_edge_inverters")
@@ -37,5 +39,18 @@ public class SolarEdgeInverter extends Inverter {
     @Override
     public InverterParametersResponse getInverterParameters() {
         return SolarEdgeExchange.getInverterParameters(this);
+    }
+
+    @Override
+    public String getType() {
+        return "solar-edge";
+    }
+
+    @Override
+    public Map<String, String> getCredentials() {
+        Map<String, String> result = new HashMap<>();
+        result.put("apiKey", getApiKey());
+        result.put("siteId", getSiteId());
+        return result;
     }
 }

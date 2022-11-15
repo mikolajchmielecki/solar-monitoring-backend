@@ -89,6 +89,17 @@ public class InverterController {
         }
     }
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity getInverter(Authentication authentication, @PathVariable Long id) {
+        User user = UserUtils.fromAuthentication(authentication);
+        try {
+            InverterResponse inverterResponse = inverterService.getInverter(user, id);
+            return new ResponseEntity(inverterResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(new StringResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/parameters/{id}")
     public ResponseEntity getInverterParameters(Authentication authentication, @PathVariable Long id) {
         User user = UserUtils.fromAuthentication(authentication);

@@ -17,4 +17,6 @@ public interface InverterService {
     void delete(User user, Long id);
     InverterParametersResponse getParameters(User user, Long id);
     Set<InverterResponse> findAllInverters(User user);
+    InverterResponse getInverter(User user, Long id);
+
 }

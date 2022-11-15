@@ -8,6 +8,8 @@ import pl.edu.pwr.solarmonitoring.utils.EncryptionUtils;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "solax_inverters")
@@ -35,5 +37,18 @@ public class SolaxInverter extends Inverter {
     @Override
     public InverterParametersResponse getInverterParameters() {
         return SolaxExchange.getInverterParameters(this);
+    }
+
+    @Override
+    public String getType() {
+        return "solax";
+    }
+
+    @Override
+    public Map<String, String> getCredentials() {
+        Map<String, String> result = new HashMap<>();
+        result.put("tokenId", getTokenId());
+        result.put("serialNumber", getSerialNumber());
+        return result;
     }
 }

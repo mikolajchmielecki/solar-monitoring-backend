@@ -6,6 +6,7 @@ import pl.edu.pwr.solarmonitoring.exchange.inverters.InverterParameters;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "inverters")
@@ -27,4 +28,8 @@ public abstract class Inverter implements InverterParameters {
 
     @Column
     private Double beforeEnergy;
+
+    public abstract String getType();
+
+    public abstract Map<String, String> getCredentials();
 }
