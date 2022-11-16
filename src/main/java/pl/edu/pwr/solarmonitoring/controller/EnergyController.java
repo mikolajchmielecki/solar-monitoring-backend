@@ -40,6 +40,7 @@ public class EnergyController {
         try {
             return ResponseEntity.ok(energyService.getArchivedEnergy(user, year));
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity(new StringResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }

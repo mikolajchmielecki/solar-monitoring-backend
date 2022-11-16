@@ -5,10 +5,10 @@ import pl.edu.pwr.solarmonitoring.model.Inverter;
 import pl.edu.pwr.solarmonitoring.model.ProducedHistoryData;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.List;
 
 public interface ProducedHistoryDataRepository extends JpaRepository<ProducedHistoryData, Long> {
 
-    Collection<ProducedHistoryData> findProducedHistoryDataByInverterAndDateBetween(Inverter inverter, LocalDate start, LocalDate end);
+    List<ProducedHistoryData> findProducedHistoryDataByInverterAndDateBetweenOrderByDate(Inverter inverter, LocalDate start, LocalDate end);
 
 }

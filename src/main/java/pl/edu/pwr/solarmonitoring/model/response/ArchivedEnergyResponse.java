@@ -4,16 +4,14 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @Data
 @Builder
 public class ArchivedEnergyResponse {
 
-    private Integer year;
-    private Collection<HistoryDataResponse> remitEnergy;
-    private Collection<HistoryDataResponse> chargeEnergy;
-    private Collection<HistoryDataResponse> totalProducedEnergy;
-    private Map<String, Collection<HistoryDataResponse>> producedEnergy;
+    private String name;
+    private List<Double> data;
 
 }
