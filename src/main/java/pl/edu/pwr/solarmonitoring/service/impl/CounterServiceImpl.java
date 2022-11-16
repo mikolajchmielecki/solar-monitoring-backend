@@ -36,7 +36,7 @@ public class CounterServiceImpl implements CounterService {
 
     @Override
     public CounterResponse get(User user) {
-        return CounterResponse.builder().login(user.getCounter().getLogin()).build();
+        return CounterResponse.builder().login(user.getCounter() != null ? user.getCounter().getLogin() : "").build();
     }
 
 }
