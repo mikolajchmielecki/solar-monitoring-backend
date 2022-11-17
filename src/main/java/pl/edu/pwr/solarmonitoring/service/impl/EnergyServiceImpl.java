@@ -30,7 +30,7 @@ public class EnergyServiceImpl implements EnergyService {
     @Override
     public List<ArchivedEnergyResponse> getArchivedEnergy(User user, Integer year) {
         LocalDate startDate = LocalDate.of(year - 1, 12, 31);
-        LocalDate endDate = LocalDate.of(year + 1, 1, 1);
+        LocalDate endDate = LocalDate.of(year, 12, 31);
 
         List<ChargedHistoryData> chargedHistoryData = chargedHistoryDataRepository.findChargedHistoryDataByCounterAndDateBetweenOrderByDate(user.getCounter(), startDate, endDate);
         ArchivedEnergyResponse chargedEnergyResponse = EnergyServiceUtils.getChargedHistoryResponse(chargedHistoryData);
