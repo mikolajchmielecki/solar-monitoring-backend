@@ -124,7 +124,26 @@ public class WebApplicationTest {
     }
 
     @Test
-    @Order(9)
+    @Order(5)
+    public void editInverterTest() {
+        login(PASSWORD);
+
+        clickElementByText("Falowniki");
+        clickElementByText("Lista falowników");
+
+
+        WebElement inverterCard = findCardWithHeader("Falownik Solax");
+        inverterCard.findElement(By.xpath(".//button[@class='btn btn-primary btn-sm']")).click();
+        webDriver.findElement(By.xpath("//*[@id=\"serialNumber\"]")).sendKeys("anyText");
+        clickElementByText("Zapisz");
+
+        inverterCard = findCardWithHeader("Falownik Solax");
+        String status = getInverterParameter(inverterCard, "Status: ");
+        Assertions.assertTrue(status.equals("COMMUNICATION_ERROR"), "Bad status message");
+    }
+
+    @Test
+    @Order(6)
     public void deleteAllInverters() {
         login(PASSWORD);
 
@@ -139,10 +158,30 @@ public class WebApplicationTest {
             clickElementByText("Tak, usuń");
             wait.until(ExpectedConditions.invisibilityOf(webDriver.findElement(By.xpath("//div[@class='modal-body']//p[contains(text(), 'Ładowanie...')]"))));
         }
+
+        Assertions.assertEquals(0, webDriver.findElements(By.xpath("//div[@class='card']")).size(), "Page contains several inverters cards");
     }
 
     @Test
-    @Order(10)
+    @Order(7)
+    public void updateCounterCredentials() {
+        login(PASSWORD);
+
+        clickElementByText("Licznik ");
+
+        webDriver.findElement(By.xpath("//*[@id=\"login\"]")).sendKeys(LOGIN);
+        webDriver.findElement(By.xpath("//*[@id=\"password\"]")).sendKeys(PASSWORD);
+        webDriver.findElement(By.xpath("//*[@id=\"confirmPassword\"]")).sendKeys(PASSWORD);
+
+        clickElementByText("Zapisz ");
+
+        String response = getAlertText();
+        Assertions.assertEquals("Zmiany zostały zapisane pomyślnie", response, "Response message incorrect");
+
+    }
+
+    @Test
+    @Order(8)
     public void deleteAccountTest() {
         login(PASSWORD);
         assertLogin();
