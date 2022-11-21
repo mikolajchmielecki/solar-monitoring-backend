@@ -20,6 +20,7 @@ import java.util.Map;
 @NoArgsConstructor
 @ToString
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class SolarEdgeInverter extends Inverter {
 
     @Column(nullable = false)
@@ -36,6 +37,9 @@ public class SolarEdgeInverter extends Inverter {
         this.apiKey = EncryptionUtils.encrypt(apiKey);
     }
 
+    public String getPlainApiKey() {
+        return apiKey;
+    }
     @Override
     public InverterParametersResponse getInverterParameters() {
         return SolarEdgeExchange.getInverterParameters(this);

@@ -41,7 +41,8 @@ public class InverterServiceImpl implements InverterService {
             throw new IllegalArgumentException(msg);
         }
         SolaxInverter inverter = SolaxInverterMapper.INSTANCE.requestToEntity(request);
-        inverter.setTokenId(inverter.getTokenId());
+        inverter.setTokenId(inverter.getPlainTokenId());
+        inverter.setName(request.getName());
         user.getInverters().add(inverter);
         userRepository.save(user);
     }
@@ -55,7 +56,8 @@ public class InverterServiceImpl implements InverterService {
             throw new IllegalArgumentException(msg);
         }
         SolarEdgeInverter inverter = SolarEdgeInverterMapper.INSTANCE.requestToEntity(request);
-        inverter.setApiKey(inverter.getApiKey());
+        inverter.setApiKey(inverter.getPlainApiKey());
+        inverter.setName(request.getName());
         user.getInverters().add(inverter);
         userRepository.save(user);
     }

@@ -1,6 +1,7 @@
 package pl.edu.pwr.solarmonitoring.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import pl.edu.pwr.solarmonitoring.exchange.inverters.InverterParameters;
 
@@ -13,6 +14,7 @@ import java.util.Map;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @ToString
+@EqualsAndHashCode
 public abstract class Inverter implements InverterParameters {
 
     @Id

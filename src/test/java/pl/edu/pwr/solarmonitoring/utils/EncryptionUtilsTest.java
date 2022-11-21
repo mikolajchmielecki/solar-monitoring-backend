@@ -13,7 +13,7 @@ class EncryptionUtilsTest {
 
     @Test
     public void checkEncryption() {
-        String text = "mikolaj1234";
+        String text = "1234";
         String encrypted = EncryptionUtils.encrypt(text);
         String decrypted = EncryptionUtils.decrypt(encrypted);
         Assert.assertEquals("Decrypted text doesn't match to original", text, decrypted);

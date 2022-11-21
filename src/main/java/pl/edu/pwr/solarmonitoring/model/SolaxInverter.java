@@ -18,6 +18,7 @@ import java.util.Map;
 @NoArgsConstructor
 @ToString
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class SolaxInverter extends Inverter {
 
     @Column
@@ -28,6 +29,10 @@ public class SolaxInverter extends Inverter {
 
     public String getTokenId() {
         return EncryptionUtils.decrypt(tokenId);
+    }
+
+    public String getPlainTokenId() {
+        return tokenId;
     }
 
     public void setTokenId(String tokenId) {
