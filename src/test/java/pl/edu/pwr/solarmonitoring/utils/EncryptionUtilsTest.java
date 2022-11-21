@@ -1,6 +1,6 @@
 package pl.edu.pwr.solarmonitoring.utils;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ class EncryptionUtilsTest {
         String text = "1234";
         String encrypted = EncryptionUtils.encrypt(text);
         String decrypted = EncryptionUtils.decrypt(encrypted);
-        Assert.assertEquals("Decrypted text doesn't match to original", text, decrypted);
+        Assertions.assertEquals(text, decrypted, "Decrypted text doesn't match to original");
     }
 
 }
