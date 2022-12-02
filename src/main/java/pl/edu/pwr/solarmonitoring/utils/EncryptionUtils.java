@@ -1,9 +1,7 @@
 package pl.edu.pwr.solarmonitoring.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
@@ -14,7 +12,6 @@ import java.util.Base64;
 public class EncryptionUtils {
 
     public static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
-
     private static String key;
 
     public static void setKey(String newKey) {
@@ -32,7 +29,6 @@ public class EncryptionUtils {
         } catch (Exception e) {
             throw new RuntimeException("Error occured while encrypting plainText", e);
         }
-
     }
 
     public static String decrypt(final String encryptedString) {
@@ -48,5 +44,4 @@ public class EncryptionUtils {
             throw new RuntimeException("Error occured while decrypting data", e);
         }
     }
-
 }

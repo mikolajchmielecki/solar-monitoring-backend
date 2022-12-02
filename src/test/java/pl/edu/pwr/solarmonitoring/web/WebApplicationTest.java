@@ -144,12 +144,10 @@ public class WebApplicationTest {
 
     @Test
     @Order(6)
-    public void deleteAllInverters() {
+    public void deleteAllInvertersTest() {
         login(PASSWORD);
-
         clickElementByText("Falowniki");
         clickElementByText("Lista falowników ");
-
         By deleteButtonBy = By.xpath("//button[@class='btn btn-danger btn-sm']");
         int size = webDriver.findElements(deleteButtonBy).size();
         for (int i = 0; i < size; i++) {
@@ -158,13 +156,12 @@ public class WebApplicationTest {
             clickElementByText("Tak, usuń");
             wait.until(ExpectedConditions.invisibilityOf(webDriver.findElement(By.xpath("//div[@class='modal-body']//p[contains(text(), 'Ładowanie...')]"))));
         }
-
         Assertions.assertEquals(0, webDriver.findElements(By.xpath("//div[@class='card']")).size(), "Page contains several inverters cards");
     }
 
     @Test
     @Order(7)
-    public void updateCounterCredentials() {
+    public void updateCounterCredentialsTest() {
         login(PASSWORD);
 
         clickElementByText("Licznik ");

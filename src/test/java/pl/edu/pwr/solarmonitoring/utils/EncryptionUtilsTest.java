@@ -12,7 +12,7 @@ class EncryptionUtilsTest {
     }
 
     @Test
-    public void checkEncryption() {
+    public void checkEncryptionTest() {
         String text = "1234";
         String encrypted = EncryptionUtils.encrypt(text);
         String decrypted = EncryptionUtils.decrypt(encrypted);
