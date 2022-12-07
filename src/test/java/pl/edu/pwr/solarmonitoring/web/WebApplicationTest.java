@@ -28,6 +28,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+@Disabled
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class WebApplicationTest {
 
